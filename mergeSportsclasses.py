@@ -1,7 +1,9 @@
 import json
 import os
+import os
+JSON_PATH = os.path.join(os.path.dirname(os.path.realpath(__file__)), "data")
 
-JSON_PATH = os.environ.get('UNISPORT_JSON_PATH')
+print("Merging data in {}".format(JSON_PATH))
 
 with open(os.path.join(JSON_PATH, 'hu.json')) as infile:
     hu = json.loads(infile.read())
