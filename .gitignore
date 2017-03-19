@@ -1,0 +1,5 @@
+/.Python
+/unisport-scrapers/
+/data/*.json
+/project.egg-info/
+*.pyc
