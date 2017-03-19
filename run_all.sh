@@ -1,7 +1,7 @@
 #!/bin/bash
 
 rm data/*.json
-source unisport_scrapers/bin/activate
+source unisport-scrapers/bin/activate
 
 scrapy crawl hu -o data/hu.json
 scrapy crawl tu -o data/tu.json
