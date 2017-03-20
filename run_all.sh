@@ -1,6 +1,12 @@
 #!/bin/bash
 
-rm data/*.json
+# exit on first failure
+set -e
+
+# change to script directory
+cd "$(dirname "$0")"
+
+rm data/*.json || true
 source unisport-scrapers/bin/activate
 
 scrapy crawl hu -o data/hu.json
