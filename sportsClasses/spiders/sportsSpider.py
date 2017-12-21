@@ -24,10 +24,7 @@ def parse_details(self, response):
 
         date["timeframe"] = row.xpath("./td[6]/a/text()").extract_first()
 
-        price_list = row.select("./td[8]/div/text()").extract()
-        if len(price_list) < 1:
-            price_list = row.select("./td[8]/text()").extract()
-        date['price'] = price_list[0]
+        date['price'] = row.xpath("./td[8]//text()").extract_first()
 
         bookable_list = row.xpath("./td[9]/input/@value")
         if len(bookable_list) > 0:
