@@ -29,11 +29,11 @@ def parse_details(self, response):
             price_list = row.select("./td[8]/text()").extract()
         date['price'] = price_list[0]
 
-        bookable_list = row.select("./td[9]/input/@value")
+        bookable_list = row.xpath("./td[9]/input/@value")
         if len(bookable_list) > 0:
-            date["bookable"] = row.select("./td[9]/input/@value")[0].extract()
+            date["bookable"] = row.xpath("./td[9]/input/@value")[0].extract()
         else:
-            date["bookable"] = row.select("./td[9]/span/text()").extract_first()
+            date["bookable"] = row.xpath("./td[9]/span/text()").extract_first()
 
         dates.append(date)
 
