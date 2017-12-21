@@ -37,5 +37,5 @@ def parse_details(self, response):
 
         dates.append(date)
 
-        sports_class['dates'] = dates
+    sports_class['dates'] = dates
     return sports_class
