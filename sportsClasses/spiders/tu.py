@@ -21,7 +21,7 @@ class TuSpider(CrawlSpider):
 
         sportsClass = SportsClassItem()
         sportsClass['url'] = response.url
-        sportsClass['name'] = response.xpath("//h1/text()").extract_first()
+        sportsClass['name'] = response.xpath("//h1/text()").extract_first().strip()
         sportsClass['description'] = "".join([part.strip() for part in response.xpath("//div[@class='contentstyle twocol']/*/text()").extract()[1:]])
         hxs = HtmlXPathSelector(response)
         tables = hxs.select("//tbody/tr")

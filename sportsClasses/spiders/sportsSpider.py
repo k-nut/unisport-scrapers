@@ -14,7 +14,7 @@ def try_extract(row, selector):
 def parse_details(self, response):
     sports_class = SportsClassItem()
     sports_class['url'] = response.url
-    sports_class['name'] = response.xpath("//div[@class='bs_head']/text()").extract_first()
+    sports_class['name'] = response.xpath("//div[@class='bs_head']/text()").extract_first().strip()
     sports_class['description'] = "\n".join(response.css(".bs_kursbeschreibung > p::text").extract())
     hxs = HtmlXPathSelector(response)
     tables = hxs.select("//table[@class='bs_kurse']/tbody/tr")
