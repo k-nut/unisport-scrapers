@@ -3,14 +3,6 @@ from scrapy.selector import HtmlXPathSelector
 from sportsClasses.items import SportsClassItem
 
 
-def try_extract(row, selector):
-    name_list = row.select(selector).extract()
-    if name_list:
-        return name_list[0]
-    else:
-        return 'Keine Angaben'
-
-
 def parse_details(self, response):
     sports_class = SportsClassItem()
     sports_class['url'] = response.url
@@ -22,15 +14,15 @@ def parse_details(self, response):
     for row in tables:
         date = {}
 
-        date["name"] = try_extract(row, "./td[2]/text()")
+        date["name"] = row.xpath("./td[2]/text()").extract_first(default="Keine Angaben")
 
-        date["day"] = try_extract(row, "./td[3]/text()")
+        date["day"] = row.xpath("./td[3]/text()").extract_first(default="Keine Angaben")
 
-        date["time"] = try_extract(row, "./td[4]/text()")
+        date["time"] = row.xpath("./td[4]/text()").extract_first(default="Keine Angaben")
 
-        date["place"] = try_extract(row, "./td[5]/a/text()")
+        date["place"] = row.xpath("./td[5]/a/text()").extract_first(default="Keine Angaben")
 
-        date["timeframe"] = row.select("./td[6]/a/text()").extract_first()
+        date["timeframe"] = row.xpath("./td[6]/a/text()").extract_first()
 
         price_list = row.select("./td[8]/div/text()").extract()
         if len(price_list) < 1:
