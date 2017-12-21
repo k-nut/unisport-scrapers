@@ -2,4 +2,5 @@
 /unisport-scrapers/
 /data/*.json
 /project.egg-info/
+/build/
 *.pyc
