@@ -24,7 +24,8 @@ fu = load_file('fu.json')
 htw = load_file('htw.json')
 beuth = load_file('beuth.json')
 tu = load_file('tu.json')
+potsdam = load_file('potsdam.json')
 
 with open(os.path.join(JSON_PATH, 'alle.json'), 'w') as outfile:
-    outfile.write(json.dumps(hu[1:] + fu[1:] + beuth[1:] + htw[1:] + tu))
+    outfile.write(json.dumps(hu[1:] + fu[1:] + beuth[1:] + htw[1:]+ potsdam[1:] + tu))
 

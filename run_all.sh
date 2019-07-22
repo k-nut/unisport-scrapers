@@ -14,5 +14,6 @@ scrapy crawl tu -o data/tu.json
 scrapy crawl fu -o data/fu.json
 scrapy crawl htw -o data/htw.json
 scrapy crawl beuth -o data/beuth.json
+scrapy crawl potsdam -o data/potsdam.json
 
 python3 mergeSportsclasses.py
