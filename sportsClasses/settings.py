@@ -13,5 +13,9 @@ BOT_NAME = 'sportsClasses'
 SPIDER_MODULES = ['sportsClasses.spiders']
 NEWSPIDER_MODULE = 'sportsClasses.spiders'
 
+ITEM_PIPELINES = {
+    'sportsClasses.pipelines.DatabasePipeline': 300
+}
+
 # Crawl responsibly by identifying yourself (and your website) on the user-agent
-#USER_AGENT = 'sportsClasses (+http://www.yourdomain.com)'
+# USER_AGENT = 'sportsClasses (+http://www.yourdomain.com)'
