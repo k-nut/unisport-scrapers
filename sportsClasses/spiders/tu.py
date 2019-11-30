@@ -11,7 +11,7 @@ from sportsClasses.items import SportsClassItem, CourseItem, LocationItem
 class TuSpider(CrawlSpider):
     name = "tu"
     allowed_domains = ["www.tu-sport.de"]
-    start_urls = ['http://www.tu-sport.de/index.php?id=2472']
+    start_urls = ['https://www.tu-sport.de/index.php?id=2472']
     rules = [
         Rule(LinkExtractor(allow=['index.php\?id=2860.*']), callback='parse_details')
     ]
