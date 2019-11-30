@@ -5,8 +5,8 @@ from collections import namedtuple
 from urllib.parse import urljoin
 import html
 
-from scrapy.selector import HtmlXPathSelector
 from scrapy.spiders import CrawlSpider, Rule
+from scrapy.shell import inspect_response
 from scrapy.linkextractors import LinkExtractor
 from scrapy.utils.response import get_base_url
 
@@ -36,11 +36,15 @@ class SportsSpider(CrawlSpider):
         yield sports_class
 
         for row in response.xpath("//table[@class='bs_kurse']/tbody/tr"):
+            place_link = row.xpath("./td[5]/a")
+            place = place_link.css("::text").extract_first()
+            place_url = place_link.css("::attr(href)").extract_first()
             course = CourseItem(
                 name=row.xpath("./td[2]/text()").extract_first(),
                 day=row.xpath("./td[3]/text()").extract_first(),
                 time=row.xpath("./td[4]/text()").extract_first(),
-                place=row.xpath("./td[5]/a/text()").extract_first(),
+                place=place,
+                place_url=response.urljoin(place_url),
                 timeframe=row.xpath("./td[6]/a/text()").extract_first(),
                 price=row.xpath("./td[8]//text()").extract_first(),
             )
@@ -55,9 +59,18 @@ class SportsSpider(CrawlSpider):
             yield course
 
     def parse_locations(self, response):
-        match = re.search('.*var markers=(.*)', response.body.decode('utf-8'))
+        location_links = response.css('.bs_flmenu li a')
+        urls_by_name = { }
+        for link in location_links:
+            url = link.css("::attr(href)").extract_first()
+            name = link.css(".bs_spname::text").extract_first()
+            urls_by_name[name] = response.urljoin(url)
+
+        match = re.search('.*var markers=(.*)', response.text)
         js_list = match.group(1)
         # the line ends with a semicolon. Strip it before parsing
         locations = json.loads(js_list[:-1])
         for location in locations:
-            yield LocationItem(lat=location[0], lon=location[1], name=html.unescape(location[2]))
+            name = html.unescape(location[2])
+            url = urls_by_name.get(name)
+            yield LocationItem(lat=location[0], lon=location[1], name=name, url=url)

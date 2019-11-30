@@ -28,6 +28,7 @@ class Course(Base):
     __tablename__ = "course"
     id = Column(Integer, primary_key=True)
     sports_class_url = Column(String, ForeignKey("class.url"))
+    place_url = Column(String, ForeignKey("location.url"))
     name = Column(String)
     day = Column(String)
     place = Column(String)
@@ -39,7 +40,7 @@ class Course(Base):
 
 class Location(Base):
     __tablename__ = "location"
-    id = Column(Integer, primary_key=True)
+    url = Column(String, primary_key=True)
     name = Column(String)
     lat = Column(Float)
     lon = Column(Float)

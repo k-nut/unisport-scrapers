@@ -24,9 +24,11 @@ class CourseItem(scrapy.Item):
     timeframe = scrapy.Field()
     bookable = scrapy.Field()
     url = scrapy.Field()
+    place_url = scrapy.Field()
 
 
 class LocationItem(scrapy.Item):
     name = scrapy.Field()
+    url = scrapy.Field()
     lat = scrapy.Field()
     lon = scrapy.Field()
