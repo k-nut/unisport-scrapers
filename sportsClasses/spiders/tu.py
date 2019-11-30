@@ -34,7 +34,10 @@ class TuSpider(CrawlSpider):
         for row in response.xpath("//tbody/tr"):
             if "addex" in row.attrib.get('class', ""):
                 addex_course = self._parse_addex_course_row(response, row)
-                course = CourseItem(**prev, **addex_course)
+                # This should create a new item that takes all the values
+                # from the previous row and overrides the updated ones
+                # from the new row
+                course = CourseItem(**{**prev, **addex_course})
             else:
                 course = self._parse_full_course_row(response, row)
 
