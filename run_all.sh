@@ -4,4 +4,4 @@
 set -e
 
 python empty_db.py
-scrapy list | xargs -n 1 scrapy crawl --loglvel=INFO
+scrapy list | xargs -n 1 scrapy crawl --loglevel=INFO
