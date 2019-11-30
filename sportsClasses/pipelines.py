@@ -60,4 +60,5 @@ class DatabasePipeline(object):
             session.commit()
         except:
             session.rollback()
+        return item
 
