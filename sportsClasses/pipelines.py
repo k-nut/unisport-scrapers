@@ -1,7 +1,8 @@
+import logging
 import os
 
 from sqlalchemy import String, Column, JSON, Integer, DateTime, Text, ForeignKey, Float
-from sqlalchemy.exc import InvalidRequestError
+from sqlalchemy.exc import InvalidRequestError, SQLAlchemyError
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, relationship
@@ -59,7 +60,9 @@ class DatabasePipeline(object):
             db_item = DBClass(**item)
             session.add(db_item)
             session.commit()
-        except:
+        except SQLAlchemyError as e:
+            logging.warning("Putting {} into DB failed with exception".format(db_item))
+            logging.warning(e)
             session.rollback()
         return item
 
