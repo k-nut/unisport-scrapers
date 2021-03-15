@@ -4,4 +4,10 @@
 set -e
 
 python empty_db.py
-scrapy list | xargs -n 1 scrapy crawl --loglevel=INFO
+for name in $(scrapy list)
+do
+  echo "----- Scraping $name --------"
+  scrapy crawl --loglevel=INFO $name
+  echo "---------- Done -------------"
+  echo
+done
