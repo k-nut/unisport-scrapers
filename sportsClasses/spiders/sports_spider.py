@@ -35,7 +35,7 @@ class SportsSpider(CrawlSpider):
         sports_class = SportsClassItem()
         sports_class['url'] = response.url
         sports_class['name'] = response.xpath("//div[@class='bs_head']/text()").extract_first().strip()
-        sports_class['description'] = "\n".join(response.css(".bs_kursbeschreibung > p::text").extract())
+        sports_class['description'] = "\n".join(response.css(".bs_kursbeschreibung *::text").extract())
         yield sports_class
 
         for row in response.xpath("//table[@class='bs_kurse']/tbody/tr"):
