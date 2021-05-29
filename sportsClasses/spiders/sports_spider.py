@@ -28,6 +28,9 @@ class SportsSpider(CrawlSpider):
         Rule(LocationLinkExtractor(allow=['_.+\.html']), callback='parse_locations')
     ]
 
+    def inner_text(self, row, selector: str) -> str:
+        return " ".join(row.xpath(selector).css('::text').extract())
+
     def parse_details(self, response):
         sports_class = SportsClassItem()
         sports_class['url'] = response.url
@@ -37,15 +40,15 @@ class SportsSpider(CrawlSpider):
 
         for row in response.xpath("//table[@class='bs_kurse']/tbody/tr"):
             place_link = row.xpath("./td[5]/a")
-            place = place_link.css("::text").extract_first()
+            place = self.inner_text(place_link, ".")
             place_url = place_link.css("::attr(href)").extract_first()
             course = CourseItem(
-                name=row.xpath("./td[2]/text()").extract_first(),
-                day=row.xpath("./td[3]/text()").extract_first(),
-                time=row.xpath("./td[4]/text()").extract_first(),
+                name=self.inner_text(row, "./td[2]"),
+                day=self.inner_text(row, "./td[3]"),
+                time=self.inner_text(row, "./td[4]"),
                 place=place,
                 place_url=response.urljoin(place_url),
-                timeframe=row.xpath("./td[6]/a/text()").extract_first(),
+                timeframe=self.inner_text(row, "./td[6]/a"),
                 price=row.xpath("./td[8]//text()").extract_first(),
             )
 
