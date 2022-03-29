@@ -21,10 +21,10 @@ class TuSpider(CrawlSpider):
     ]
 
     def parse_details(self, response):
-        if u'Im Wintersemester sind keine' in response.body_as_unicode():
+        if u'Im Wintersemester sind keine' in response.text:
             return
 
-        if u'Derzeit keine Angebote vorhanden.' in response.body_as_unicode():
+        if u'Derzeit keine Angebote vorhanden.' in response.text:
             return
 
         sportsClass = SportsClassItem()
@@ -45,6 +45,8 @@ class TuSpider(CrawlSpider):
     def parse_location(self, response):
         osm_link = response.css(".dwzeh > .row a::attr('href')").extract_first()
         name = response.css("h1::text").extract_first()
+        if not osm_link or not name:
+            return
         match = re.search('mlat=(.*)&mlon=(.*)&', osm_link)
         lat, lon = float(match.group(1)), float(match.group(2))
         yield LocationItem(lat=lat, lon=lon, name=name, url=response.url)
