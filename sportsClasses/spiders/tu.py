@@ -43,12 +43,11 @@ class TuSpider(CrawlSpider):
             yield Request(course["place_url"], self.parse_location)
 
     def parse_location(self, response):
-        osm_link = response.css(".dwzeh > .row a::attr('href')").extract_first()
+        lat = response.css(".sportsmap::attr('data-center-lat')").extract_first()
+        lon = response.css(".sportsmap::attr('data-center-lon')").extract_first()
         name = response.css("h1::text").extract_first()
-        if not osm_link or not name:
+        if not lat or not lon or not name:
             return
-        match = re.search('mlat=(.*)&mlon=(.*)&', osm_link)
-        lat, lon = float(match.group(1)), float(match.group(2))
         yield LocationItem(lat=lat, lon=lon, name=name, url=response.url)
 
 
