@@ -29,7 +29,7 @@ class SportsSpider(CrawlSpider):
     ]
 
     def inner_text(self, row, selector: str) -> str:
-        return " ".join(row.xpath(selector).css('::text').extract())
+        return " ".join(row.css(selector).css('::text').extract())
 
     def parse_details(self, response):
         sports_class = SportsClassItem()
@@ -39,24 +39,22 @@ class SportsSpider(CrawlSpider):
         yield sports_class
 
         for row in response.xpath("//table[@class='bs_kurse']/tbody/tr"):
-            place_link = row.xpath("./td[5]/a")
-            place = self.inner_text(place_link, ".")
-            place_url = place_link.css("::attr(href)").extract_first()
+            place_url = row.css(".bs_sort a::attr(href)").extract_first()
             course = CourseItem(
-                name=self.inner_text(row, "./td[2]"),
-                day=self.inner_text(row, "./td[3]"),
-                time=self.inner_text(row, "./td[4]"),
-                place=place,
+                name=self.inner_text(row, ".bs_sdet > span"),
+                day=self.inner_text(row, ".bs_stag"),
+                time=self.inner_text(row, ".bs_szeit"),
+                place=self.inner_text(row, '.bs_sort'),
                 place_url=response.urljoin(place_url),
-                timeframe=self.inner_text(row, "./td[6]/a"),
-                price=row.xpath("./td[8]//text()").extract_first(),
+                timeframe=self.inner_text(row, ".bs_szr"),
+                price=self.inner_text(row, ".bs_spreis > span")
             )
 
-            bookable_list = row.xpath("./td[9]/input/@value")
+            bookable_list = row.css(".bs_sbuch").xpath("./input/@value")
             if len(bookable_list) > 0:
-                course['bookable'] = row.xpath("./td[9]/input/@value")[0].extract()
+                course['bookable'] = bookable_list[0].extract()
             else:
-                course['bookable'] = row.xpath("./td[9]/span/text()").extract_first()
+                course['bookable'] = row.css(".bs_sbuch").xpath("./span/text()").extract_first()
 
             course['sports_class_url'] = sports_class['url']
             yield course
