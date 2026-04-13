@@ -1,0 +1,10 @@
+[project]
+name = "unisport-scrapers"
+version = "0.1.0"
+description = "Scrapers for all sports classes offered by universities in Berlin"
+requires-python = ">=3.12"
+dependencies = [
+    "psycopg2==2.9.3",
+    "scrapy==2.14.2",
+    "sqlalchemy==1.3.11",
+]
